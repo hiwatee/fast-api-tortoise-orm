@@ -1,0 +1,33 @@
+version: "3"
+services:
+  mysql:
+    image: mysql:5.7
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./db_data:/var/lib/mysql
+      - ./localhost.sql:/docker-entrypoint-initdb.d/install_db.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: database
+      MYSQL_USER: fastapi
+      MYSQL_PASSWORD: password
+    ports:
+      - 3306:3306
+  project-api:
+    build: .
+    ports:
+      - 8000:8000
+    links:
+      - mysql
+    depends_on:
+      - mysql
+    environment:
+      DB_HOST: mysql
+      DB_DATABASE: database
+      DB_USERNAME: fastapi
+      DB_PASSWORD: password
+      ENV: default
+      AUTH_SECRET_KEY: YOUR_SECRET_KEY
+      ACCESS_TOKEN_EXPIRE_MINUTES: 720
+    volumes:
+      - .:/code:cached
