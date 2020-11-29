@@ -7,7 +7,6 @@ from services.exceptions import HTTP_404_NOT_FOUND
 from models.todo import Todo_Pydantic, TodoIn_Pydantic, Todo
 from models.user import User
 
-
 tags = ["todos"]
 router = APIRouter()
 
@@ -20,7 +19,7 @@ async def create(form_data: TodoIn_Pydantic, user: User = Depends(get_current_us
 
 @router.get("/todos", tags=tags, response_model=List[Todo_Pydantic])
 async def get_list(user: User = Depends(get_current_user)):
-    return await Todo_Pydantic.from_queryset(Todo.filter(user=user))
+    return await Todo.filter(user=user)
 
 
 @router.get("/todos/{todo_id}", tags=tags, response_model=Todo_Pydantic)
