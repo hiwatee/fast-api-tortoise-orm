@@ -1,7 +1,7 @@
 # fast-api-tutorial
 
 ## runserver
-uvicorn main:app --reload
+docker-compose up
 
 ## swagger
 http://127.0.0.1:8000/docs
